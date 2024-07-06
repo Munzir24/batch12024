@@ -1,5 +1,5 @@
 def my_parameters(a,b) {
-    Division = a+b
+    Division = a/b
     println "Division of $a and $b is ${Division}"
 }
 
