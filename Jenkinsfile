@@ -1,3 +1,9 @@
+def my_parameters(a,b) {
+    sum = a+b
+    println "Sum of $a and $b is ${sum}"
+}
+
+
 pipeline {
     agent {
         label 'slave1'
@@ -6,11 +12,8 @@ pipeline {
         stage('Working with conditions') {
             steps {
                 script {
-                    i=1
-                    while (i <=17.5) {
-                        println "Value of i in this run is ${i}"
-                        i=i+1.25
-                    }
+                    my_parameters(1.2,5.7)
+
                     }
                     
                     
