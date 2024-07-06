@@ -1,6 +1,6 @@
 def my_parameters(a,b) {
-    sum = a+b
-    println "Sum of $a and $b is ${sum}"
+    Division = a+b
+    println "Division of $a and $b is ${Division}"
 }
 
 
@@ -9,7 +9,7 @@ pipeline {
         label 'slave1'
     }
     stages {
-        stage('Working with conditions') {
+        stage('Working with functions') {
             steps {
                 script {
                     my_parameters(1.2,5.7)
