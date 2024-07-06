@@ -1,5 +1,6 @@
 pipeline {
-    agent slave1
+    agent {slave1
+    }
     environment {
         JAVA_HOME = "/usr/bin/java"
     }
