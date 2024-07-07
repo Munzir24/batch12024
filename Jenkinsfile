@@ -6,7 +6,7 @@ pipeline {
     environment {
         MVN_HOME = tool name: 'maven', type: 'maven'
         POM_FILE = 'pom.xml'
-        NEXUS_TOKEN = 'nexus-token'
+        NEXUS_TOKEN = credentials('nexus-token')
     }
     
     stages {
