@@ -4,7 +4,7 @@ pipeline {
 }
     environment {
         MVN_HOME = tool name: 'maven', type: 'maven'
-        SONAR_TOKEN = '8eb5ccbfbb9c6748a8238d16a32418898f725e81'
+        SONAR_TOKEN = credentials('sonar-token')
     }
 
     stages {
@@ -27,6 +27,7 @@ pipeline {
         stage('Sonar Analysis'){
             steps {
                 script {
+                    sh """
                     #!/bin/bash
                     echo "Executing sonar cli"
                     sonar-scanner \
@@ -37,6 +38,7 @@ pipeline {
                     -Dsonar.branch.name="release" \
                     -Dsonar.login=${env.SONAR_TOKEN} \
                     -Dsonar.organization="munzirbatch1aws2024org"
+                    """
                 }
             }
         }
