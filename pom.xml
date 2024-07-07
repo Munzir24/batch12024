@@ -4,7 +4,7 @@
 	<groupId>in.shan5a6</groupId>
 	<artifactId>myweb</artifactId>
 	<packaging>war</packaging>
-	<version>0.12.15</version>
+	<version>0.12.18</version>
 	<name>myweb Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -57,8 +57,8 @@
     <plugins>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <version>3.3.2</version>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.6.1</version>
             <configuration>
                 <source>1.7</source>
                 <target>1.7</target>
