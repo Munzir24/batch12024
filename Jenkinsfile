@@ -1,44 +1,35 @@
 pipeline {
     agent {
-  label 'slave'
-}
-    environment {
-        MVN_HOME = tool name: 'maven', type: 'maven'
-        SONAR_TOKEN = credentials('sonar-token')
+        label 'slave1'
     }
 
+    environment {
+        MVN_HOME = tool name: 'maven', type: 'maven'
+        NEXUS_TOKEN = credentials('nexus-token')
+    }
     stages {
-        stage('Code Checkout to release branch'){
+        stage('Code build using MAVEN'){
             steps {
                 script {
-                    // Checkout code from the repository
-                    git url: 'https://github.com/Munzir24/myweb.git'
-                }
-            }
-        }
-        stage('Code build'){
-            steps {
-                script {
-                    // Executing Code build
                     sh "${env.MVN_HOME}/bin/mvn clean package"
                 }
             }
         }
-        stage('Sonar Analysis'){
+        stage('Upload artificat to Nexus'){
             steps {
                 script {
-                    sh """
-                    #!/bin/bash
-                    echo "Executing sonar cli"
-                    sonar-scanner \
-                    -Dsonar.projectKey="munzirbatch1aws2024org_javaapp1"  \
-                    -Dsonar.sources="./target"   \
-                    -Dsonar.host.url="https://sonarcloud.io" \
-                    -Dsonar.branch.target="master" \
-                    -Dsonar.branch.name="release" \
-                    -Dsonar.login=${env.SONAR_TOKEN} \
-                    -Dsonar.organization="munzirbatch1aws2024org"
-                    """
+                    nexusArtifactUploader(
+                        nexusVersion: 'nexus3'
+                        protocol: 'http'
+                        nexusURL: '172.31.87.160'
+                        credentials: "${NEXUS_TOKEN}"
+                        Group_ID: "${POM_GROUPID}"
+                        Version: "${POM_VERSION}"
+                        Repository: 'pipelineapp1'
+                        ArtifactId: ${POM_ARTIFACTID}
+                        Type: ${POM_PACKAGING}
+                        File:  ./target/${POM_ARTIFACTID}-${POM_VERSION}.${POM_PACKAGING}
+                        )
                 }
             }
         }
