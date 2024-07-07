@@ -19,15 +19,15 @@ pipeline {
             steps {
                 script {
                     nexusArtifactUploader(
-                        nexusVersion: 'nexus3'
-                        protocol: 'http'
-                        nexusURL: '172.31.87.160'
-                        credentials: "${NEXUS_TOKEN}"
-                        Group_ID: "${POM_GROUPID}"
-                        Version: "${POM_VERSION}"
-                        Repository: 'pipelineapp1'
-                        ArtifactId: ${POM_ARTIFACTID}
-                        Type: ${POM_PACKAGING}
+                        nexusVersion: 'nexus3',
+                        protocol: 'http',
+                        nexusURL: '172.31.87.160',
+                        credentials: "${env.NEXUS_TOKEN}",
+                        Group_ID: "${POM_GROUPID}",
+                        Version: "${POM_VERSION}",
+                        Repository: 'pipelineapp1',
+                        ArtifactId: ${POM_ARTIFACTID},
+                        Type: ${POM_PACKAGING},
                         File:  ./target/${POM_ARTIFACTID}-${POM_VERSION}.${POM_PACKAGING}
                         )
                 }
