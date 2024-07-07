@@ -4,7 +4,6 @@ pipeline {
 }
     environment {
         MVN_HOME = tool name: 'maven', type: 'maven'
-        SONAR_TOKEN = credentials('sonar-token')
     }
 
     stages {
