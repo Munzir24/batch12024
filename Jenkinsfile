@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     // Executing Code build
-                    sh "${env.MVN_HOME}/bin/mvn clean package"
+                    sh "${env.MVN_HOME}/bin/mvn clean install"
                 }
             }
         }
