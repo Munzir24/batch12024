@@ -26,9 +26,9 @@ pipeline {
                         Group_ID: "${POM_GROUPID}",
                         Version: "${POM_VERSION}",
                         Repository: 'pipelineapp1',
-                        ArtifactId: ${POM_ARTIFACTID},
-                        Type: ${POM_PACKAGING},
-                        File:  ./target/${POM_ARTIFACTID}-${POM_VERSION}.${POM_PACKAGING}
+                        ArtifactId: "${POM_ARTIFACTID}",
+                        Type: "${POM_PACKAGING}",
+                        File:  "./target/${POM_ARTIFACTID}-${POM_VERSION}.${POM_PACKAGING}"
                         )
                 }
             }
