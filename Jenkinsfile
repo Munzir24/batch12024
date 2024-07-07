@@ -1,6 +1,6 @@
 pipeline {
     agent {
-  label 'slave1'
+  label 'slave'
 }
     environment {
         MVN_HOME = tool name: 'maven', type: 'maven'
