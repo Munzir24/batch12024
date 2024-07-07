@@ -1,23 +1,30 @@
-def my_parameters(a,b) {
-    Division = a/b
-    println "Division of $a and $b is ${Division}"
-}
-
-
 pipeline {
     agent {
-        label 'slave1'
+  label 'slave1'
+}
+    environment {
+        MVN_HOME = tool name: 'maven', type: 'maven'
     }
+
     stages {
-        stage('Working with functions') {
+        stage('Code Checkout to release branch'){
             steps {
                 script {
-                    my_parameters(1.2,5.7)
-
-                    }
-                    
-                    
+                    // Checkout code from the repository
+                    git url: 'https://github.com/Munzir24/myweb.git'
                 }
             }
         }
     }
+
+    stages {
+        stage('Code build'){
+            steps {
+                script {
+                    // Executing Code build
+                    sh "${env.MVN_HOME}/bin/mvn clean"
+                }
+            }
+        }
+    }
+}
