@@ -2,8 +2,8 @@ pipeline {
     agent {
         label "slave1"
     }
-    tools {
-        maven "Maven"
+    environment {
+        MVN_HOME = tool name: 'maven', type: 'maven'
     }
     environment {
         NEXUS_VERSION = "nexus3"
