@@ -6,7 +6,7 @@ pipeline {
     environment {
         MVN_HOME = tool name: 'maven', type: 'maven'
         POM_FILE = 'pom.xml'
-        NEXUS_TOKEN = credentials('nexus-token')
+        NEXUS_TOKEN = 'nexus-token'
     }
     
     stages {
@@ -21,11 +21,11 @@ pipeline {
         stage('Extract POM Information') {
             steps {
                 script {
-                    def pom = readMavenPom file: "${env.POM_FILE}"
-                    env.POM_GROUPID = pom.groupId
-                    env.POM_VERSION = pom.version
-                    env.POM_ARTIFACTID = pom.artifactId
-                    env.POM_PACKAGING = pom.packaging
+                    def pom = readMavenPom file: "${POM_FILE}"
+                    POM_GROUPID = pom.groupId
+                    POM_VERSION = pom.version
+                    POM_ARTIFACTID = pom.artifactId
+                    POM_PACKAGING = pom.packaging
                 }
             }
         }
@@ -38,12 +38,12 @@ pipeline {
                         protocol: 'http',
                         nexusUrl: '172.31.87.160',
                         credentialsId: "${env.NEXUS_TOKEN}",
-                        groupId: "${env.POM_GROUPID}",
-                        version: "${env.POM_VERSION}",
+                        groupId: "${POM_GROUPID}",
+                        version: "${POM_VERSION}",
                         repository: 'pipelineapp1',
-                        artifactId: "${env.POM_ARTIFACTID}",
-                        type: "${env.POM_PACKAGING}",
-                        file: "./target/${env.POM_ARTIFACTID}-${env.POM_VERSION}.${env.POM_PACKAGING}"
+                        artifactId: "${POM_ARTIFACTID}",
+                        type: "${POM_PACKAGING}",
+                        file: "./target/${POM_ARTIFACTID}-${POM_VERSION}.${POM_PACKAGING}"
                     )
                 }
             }
