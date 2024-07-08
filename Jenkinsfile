@@ -16,7 +16,7 @@ pipeline {
         stage("Clone code from VCS") {
             steps {
                 script {
-                    git https://github.com/Munzir24/batch12024.git;
+                    git url: 'https://github.com/Munzir24/myweb.git'
                 }
             }
         }
