@@ -4,8 +4,6 @@ pipeline {
     }
     environment {
         MVN_HOME = tool name: 'maven', type: 'maven'
-    }
-    environment {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "172.31.87.160"
@@ -23,7 +21,7 @@ pipeline {
         stage("Maven Build") {
             steps {
                 script {
-                    sh "mvn package -DskipTests=true"
+                    sh "${env.MVN_HOME}/bin/mvn clean package"
                 }
             }
         }
@@ -38,13 +36,13 @@ pipeline {
                     if(artifactExists) {
                         echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
                         nexusArtifactUploader(
-                            nexusVersion: NEXUS_VERSION,
-                            protocol: NEXUS_PROTOCOL,
-                            nexusUrl: NEXUS_URL,
+                            nexusVersion: "${env.NEXUS_VERSION}",
+                            protocol: "${env.NEXUS_PROTOCOL}",
+                            nexusUrl: "${env.NEXUS_URL}",
                             groupId: pom.groupId,
                             version: pom.version,
-                            repository: NEXUS_REPOSITORY,
-                            credentialsId: NEXUS_CREDENTIAL_ID,
+                            repository: "${env.NEXUS_REPOSITORY}",
+                            credentialsId: "${env.NEXUS_CREDENTIAL_ID}",
                             artifacts: [
                                 [artifactId: pom.artifactId,
                                 classifier: '',
