@@ -9,6 +9,8 @@ pipeline {
         NEXUS_URL = "172.31.87.160"
         NEXUS_REPOSITORY = "pipelineapp1"
         NEXUS_CREDENTIAL_ID = "nexus-token"
+        JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-11.0.23.0.9-2.amzn2.0.1.x86_64/"
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
     }
     stages {
         stage("Clone code from VCS") {
