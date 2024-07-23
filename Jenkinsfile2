@@ -1,0 +1,64 @@
+pipeline {
+    agent {
+        label "slave1"
+    }
+    environment {
+        MVN_HOME = tool name: 'maven', type: 'maven'
+        NEXUS_VERSION = 'nexus3'
+        NEXUS_PROTOCOL = 'http'
+        NEXUS_URL = "172.31.87.160"
+        NEXUS_REPO = 'pipelineapp1'
+        NEXUS_CREDENTIALS = credentials('nexus-token')
+        JAVA_HOME = "/usr/lib/jvm/java-11-openjdk-11.0.23.0.9-2.amzn2.0.1.x86_64/"
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
+    }
+    stages {
+        stage('Clone code from SCM') {
+            steps {
+                script {
+                    git url: 'https://github.com/Munzir24/myweb.git'
+                }
+            }
+        }
+        stage('Maven Code Build') {
+            steps {
+                script {
+                    sh "${env.MVN_HOME}/bin/mvn clean package"
+                }
+            }
+        }
+        stage('Read POM File') {
+            steps {
+                script {
+                    pom = readMavenPom file: "pom.xml";
+                    filesByGlob = findFile (glob: "target/*.${pom.packaging}");
+                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length}"
+                    artifactPath = filesByGlob[0].path;
+                    artifactExists = fileExists artifactPath;
+                    if(artifactExists) {
+                        echo "*** File: ${artifactPath}, group: ${pom.groupId}, version: ${pom.version}, packaging: {pom.packaging}";
+                        nexusArtifactUploader(
+                            nexusVersion: "${env.NEXUS_VERSION}",
+                            protocol: "${env.NEXUS_PROTOCOL}",
+                            nexusUrl: "${env.NEXUS_URL}",
+                            groupId: pom.groupId,
+                            version: pom.version,
+                            repository: "${env.NEXUS_REPO}",
+                            credentialsId: "${env.NEXUS_CREDENTIALS}",
+                            artifacts: [
+                                [artifactId: pom.artifactID,
+                                classifier: '',
+                                file: artifactPath,
+                                type: pom.packaging],
+                                [artifactID: pom.artifactId,
+                                classifier: '',
+                                file: "pom.xml",
+                                type: "pom"]
+                            ]
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
